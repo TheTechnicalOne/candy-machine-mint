@@ -166,76 +166,76 @@ const Home = (props: HomeProps) => {
   ]);
 
   return (
-    <main>
+    <main> 
+      <div className="mint-container">
       {wallet && (
         <p>Wallet {shortenAddress(wallet.publicKey.toBase58() || "")}</p>
       )}
 
-      {wallet && <p>Balance: {(balance || 0).toLocaleString()} SOL</p>}
+      {wallet && <p>Your wallet balance: {(balance || 0).toLocaleString()} SOL</p>}
 
-      {wallet && <p>Total Available: {itemsAvailable}</p>}
+      {wallet && <p>Total Supply: {itemsAvailable}</p>}
 
-      {wallet && <p>Redeemed: {itemsRedeemed}</p>}
+      {wallet && <p>Minted: {itemsRedeemed+248}</p>}
 
-      {wallet && <p>Remaining: {itemsRemaining}</p>}
+      {wallet && <p>Remaining: {itemsRemaining-248}</p>}
 
       <MintContainer>
-        {!wallet ? (
-          <ConnectButton>Connect Wallet</ConnectButton>
-        ) : (
-          <MintButton
-            disabled={isSoldOut || isMinting || !isActive}
-            onClick={onMint}
-            variant="contained"
-          >
-            {isSoldOut ? (
-              "SOLD OUT"
-            ) : isActive ? (
-              isMinting ? (
-                <CircularProgress />
+              {!wallet ? (
+                <ConnectButton>Connect Wallet</ConnectButton>
               ) : (
-                "MINT"
-              )
-            ) : (
-              <Countdown
-                date={startDate}
-                onMount={({ completed }) => completed && setIsActive(true)}
-                onComplete={() => setIsActive(true)}
-                renderer={renderCounter}
-              />
-            )}
-          </MintButton>
-        )}
-      </MintContainer>
+                <MintButton
+                  disabled={isSoldOut || isMinting || !isActive}
+                  variant="contained"
+                >
+                  {isSoldOut ? (
+                    "SOLD OUT"
+                  ) : isActive ? (
+                    isMinting ? (
+                      <CircularProgress />
+                    ) : (
+                      "SOLD OUT"
+                    )
+                  ) : (
+                    <Countdown
+                      date={startDate}
+                      onMount={({ completed }) => completed && setIsActive(true)}
+                      onComplete={() => setIsActive(true)}
+                      renderer={renderCounter}
+                    />
+                  )}
+                </MintButton>
+              )}
+            </MintContainer>
 
-      <Snackbar
-        open={alertState.open}
-        autoHideDuration={6000}
-        onClose={() => setAlertState({ ...alertState, open: false })}
-      >
-        <Alert
-          onClose={() => setAlertState({ ...alertState, open: false })}
-          severity={alertState.severity}
-        >
-          {alertState.message}
-        </Alert>
-      </Snackbar>
-    </main>
+            <Snackbar
+              open={alertState.open}
+              autoHideDuration={6000}
+              onClose={() => setAlertState({ ...alertState, open: false })}
+            >
+              <Alert
+                onClose={() => setAlertState({ ...alertState, open: false })}
+                severity={alertState.severity}>
+                {alertState.message}
+              </Alert>
+            </Snackbar>
+          </div>
+        </main>
   );
 };
 
-interface AlertState {
-  open: boolean;
-  message: string;
-  severity: "success" | "info" | "warning" | "error" | undefined;
+      interface AlertState {
+        open: boolean;
+      message: string;
+      severity: "success" | "info" | "warning" | "error" | undefined;
 }
 
-const renderCounter = ({ days, hours, minutes, seconds, completed }: any) => {
+      const renderCounter = ({days, hours, minutes, seconds, completed}: any) => {
   return (
-    <CounterText>
-      {hours + (days || 0) * 24} hours, {minutes} minutes, {seconds} seconds
-    </CounterText>
-  );
+      <CounterText>
+        {hours + (days || 0) * 24} hours, {minutes} minutes, {seconds} seconds
+      </CounterText>
+      );
 };
 
-export default Home;
+      export default Home;
